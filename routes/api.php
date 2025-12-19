@@ -12,4 +12,4 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/province', [ProvinceController::class, 'index']);
 Route::get('/city/{id}', [CityController::class, 'index']);
-Route::post('/calculate-cost', [ShippingController::class, 'calculateCost']);
+Route::post('/calculate-cost', [ShippingController::class, 'calculateCost'])->middleware('throttle:shipping-cost');
