@@ -10,6 +10,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/province', ProvinceController::class);
+Route::get('/province', [ProvinceController::class, 'index']);
 Route::get('/city/{id}', [CityController::class, 'index']);
 Route::post('/calculate-cost', [ShippingController::class, 'calculateCost']);
