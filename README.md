@@ -1,58 +1,96 @@
 # Laravel RajaOngkir JNE Shipping Calculator
 
-**Deskripsi:**
+**Description:**
 
-Project Laravel ini digunakan untuk menghitung ongkos kirim antar-district di Indonesia menggunakan **API RajaOngkir khusus kurir JNE**.  
-Fitur utama:
+This Laravel project is used to calculate domestic shipping costs between districts in Indonesia using the **RajaOngkir API with JNE courier only**.  
+Main features:
 
-- Mengambil data provinsi, kota, dan district dari RajaOngkir.  
-- Menghitung ongkos kirim antar-district untuk JNE saja.  
-- **Caching hasil API** ke database agar limit API hemat dan response lebih cepat.  
-- Cache memiliki **masa berlaku 7 hari**, setelah itu data akan di-refresh dari API.  
-- Public repo aman, **API key disimpan di `.env`**, sehingga setiap user harus memiliki key sendiri.
+- Fetch province, city, and district data from RajaOngkir.  
+- Calculate shipping costs for JNE courier only.  
+- **Cache API results** in the database to save API quota and improve response speed.  
+- Cache has a **7-day expiration**, after which data will be refreshed from the API.  
+- Public repo is safe, **API key is stored in `.env`**, so each user must provide their own key.
 
 ---
 
-## Fitur Utama
+## Main Features
 
 1. **Calculate Cost (JNE)**
    - Input: `destination`, `weight`  
-   - Output: Biaya ongkir, estimasi waktu, layanan JNE.  
-   - Hasil disimpan ke database dengan TTL 7 hari.  
+   - Output: Shipping cost, estimated delivery time, JNE service.  
+   - Results are stored in the database with a 7-day TTL.
 
-2. **Cache Database**
-   - Data ongkir disimpan di tabel `shipping_costs`.  
-   - Jika data masih valid (belum expired), tidak akan memanggil API lagi.  
+2. **Database Cache**
+   - Shipping cost data is stored in the `shipping_costs` table.  
+   - If data is still valid (not expired), the API will not be called.
 
 3. **Public-Friendly**
-   - API key tidak disimpan di repo → user harus menambahkan sendiri di `.env`.
+   - API key is not included in the repo → users must add their own key in `.env`.
 
 ---
 
-## Instalasi
+## Installation
 
-1. Clone repository:
+1. Clone the repository:
     ```bash
     git clone https://github.com/username/laravel-rajaongkir.git
     cd laravel-rajaongkir
+    ```
 
-2. Composer install:
+2. Install dependencies:
     ```bash
     composer install
+    ```
 
-3. Copy .env.example menjadi .env dan isi API key RajaOngkir:
+3. Copy `.env.example` to `.env` and set your RajaOngkir API key:
     ```env
     RAJAONGKIR_KEY=your_api_key_here
+    ```
 
-4. Generate app key:
+4. Generate application key:
     ```bash
     php artisan key:generate
+    ```
 
-5. Migrate
+5. Run migrations:
     ```bash
     php artisan migrate
+    ```
 
-6. Run
+6. Start the development server:
     ```bash
     php artisan serve
+    ```
 
+---
+
+## Usage
+
+- Endpoint to calculate JNE shipping cost:  
+
+
+- Request body:
+
+```json
+{
+  "destination": "114",  // District ID of destination
+  "weight": 1000         // Package weight in grams (optional, default 1000)
+}
+
+{
+    "meta": {
+        "message": "Success Calculate Domestic Shipping cost",
+        "code": 200,
+        "status": "success"
+    },
+    "data": [
+        {
+            "name": "Jalur Nugraha Ekakurir (JNE)",
+            "code": "jne",
+            "service": "REG",
+            "description": "Regular Service",
+            "cost": 120000,
+            "etd": "12 day"
+        }
+    ]
+}
